@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+.dark {
+  color-scheme: dark;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-once {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-pulse-once {
+  animation: pulse-once 0.8s ease-out;
+}
+
+/* Page transition */
+main > * {
+  animation: fadeInUp 0.4s ease-out;
+}
