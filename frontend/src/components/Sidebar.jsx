@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom"
 import { Home, Sun, Brain, BarChart3, Settings, Moon } from "lucide-react"
 import { useDarkMode } from "../DarkModeContext"
+import logo from "../logo.png"
 
 export default function Sidebar() {
   const { darkMode, setDarkMode } = useDarkMode()
@@ -16,7 +17,7 @@ export default function Sidebar() {
     <aside className={`fixed top-0 left-0 h-screen w-64 border-r flex flex-col z-50 transition-colors duration-300 ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
       <div className={`px-6 py-5 border-b ${darkMode ? "border-gray-800" : "border-gray-100"}`}>
         <div className="flex items-center gap-3">
-          <img src="/src/logo.png" alt="Khet Logo" className="w-10 h-10 object-contain" />
+          <img src={logo} alt="Khet Logo" className="w-10 h-10 object-contain" />
           <div>
             <h1 className={`font-bold text-lg leading-none ${darkMode ? "text-white" : "text-gray-900"}`}>Khet</h1>
             <p className={`text-xs mt-0.5 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Precision Agriculture</p>
