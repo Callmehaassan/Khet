@@ -72,29 +72,29 @@ export default function Home() {
           </p>
 
           {/* Selection Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 max-w-xl border border-white/50">
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-xs font-bold tracking-widest text-gray-500 mb-2">SELECT CITY</label>
-                <div className="relative">
-                  <select value={city} onChange={e => setCity(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm bg-white appearance-none font-medium">
-                    {CITIES.map(c => <option key={c}>{c}</option>)}
-                  </select>
-                  <span className="absolute right-3 top-3 text-gray-400 pointer-events-none text-xs">▾</span>
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-bold tracking-widest text-gray-500 mb-2">SELECT CROP</label>
-                <div className="relative">
-                  <select value={crop} onChange={e => setCrop(e.target.value)}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm bg-white appearance-none font-medium">
-                    {CROPS.map(c => <option key={c}>{c}</option>)}
-                  </select>
-                  <span className="absolute right-3 top-3 text-gray-400 pointer-events-none text-xs">▾</span>
-                </div>
-              </div>
-            </div>
+          <div className={`backdrop-blur-sm rounded-2xl shadow-2xl p-6 max-w-xl border ${darkMode ? "bg-gray-900/95 border-gray-700" : "bg-white/95 border-white/50"}`}>
+  <div className="grid grid-cols-2 gap-4 mb-4">
+    <div>
+      <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CITY</label>
+      <div className="relative">
+        <select value={city} onChange={e => setCity(e.target.value)}
+          className={`w-full border-2 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
+          {CITIES.map(c => <option key={c}>{c}</option>)}
+        </select>
+        <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
+      </div>
+    </div>
+    <div>
+      <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CROP</label>
+      <div className="relative">
+        <select value={crop} onChange={e => setCrop(e.target.value)}
+          className={`w-full border-2 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
+          {CROPS.map(c => <option key={c}>{c}</option>)}
+        </select>
+        <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
+      </div>
+    </div>
+  </div>
             <button onClick={handleAnalyze}
               className="w-full bg-green-700 hover:bg-green-800 active:scale-95 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 text-base transition-all duration-200 shadow-lg shadow-green-900/30">
               <span>⊞</span> Analyze My Conditions
