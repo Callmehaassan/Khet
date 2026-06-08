@@ -24,9 +24,9 @@ export default function Conditions() {
     setLoading(true)
     try {
       const [weatherRes, economyRes, newsRes] = await Promise.all([
-        axios.get(`http://127.0.0.1:8000/api/weather/${city}`),
-        axios.get("http://127.0.0.1:8000/api/economy"),
-        axios.get("http://127.0.0.1:8000/api/news")
+        axios.get(`${import.meta.env.VITE_API_URL}/api/weather/${city}`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/economy`),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/news`)
       ])
       setWeather(weatherRes.data)
       setEconomy(economyRes.data)
