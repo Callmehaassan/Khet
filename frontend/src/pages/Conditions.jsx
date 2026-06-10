@@ -16,9 +16,7 @@ export default function Conditions() {
   const city = localStorage.getItem("khet_city") || "Lahore"
   const crop = localStorage.getItem("khet_crop") || "Wheat"
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+  useEffect(() => { fetchData() }, [])
 
   const fetchData = async () => {
     setLoading(true)
@@ -31,7 +29,6 @@ export default function Conditions() {
       setWeather(weatherRes.data)
       setEconomy(economyRes.data)
       setNews(newsRes.data.articles)
-
       const scores = newsRes.data.articles.map(a => {
         const positive = ["record", "increase", "stable", "good", "optimal", "boost"].some(w => a.title.toLowerCase().includes(w))
         const negative = ["fall", "drop", "crisis", "flood", "drought", "loss", "disruption"].some(w => a.title.toLowerCase().includes(w))
@@ -39,9 +36,7 @@ export default function Conditions() {
       })
       const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
       setSentiment(parseFloat(avg.toFixed(2)))
-    } catch (err) {
-      console.error(err)
-    }
+    } catch (err) { console.error(err) }
     setLoading(false)
   }
 
@@ -77,29 +72,29 @@ export default function Conditions() {
     <div className={`min-h-screen ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
 
       {/* Header */}
-      <div className={`border-b px-8 py-4 flex items-center justify-between ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
-        <div className="flex items-center gap-4">
+      <div className={`border-b px-5 md:px-8 py-4 ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
+        <div className="flex items-center justify-between">
           <h2 className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-900"}`}>Today's Intelligence</h2>
-          <div className={`flex gap-3 text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-            <span className="text-green-600 font-medium">{city}</span>
-            <span>Karachi</span>
-            <span>Islamabad</span>
-            <span className="mx-2">|</span>
-            <span className="text-green-600 font-medium">{crop}</span>
-            <span>Rice</span>
+          <div className="flex items-center gap-3">
+            <button onClick={fetchData} className={`${darkMode ? "text-gray-500 hover:text-gray-300" : "text-gray-400 hover:text-gray-600"}`}>🔄</button>
+            <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-white text-xs">A</div>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button onClick={fetchData} className={`${darkMode ? "text-gray-500 hover:text-gray-300" : "text-gray-400 hover:text-gray-600"}`}>🔄</button>
-          <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-white text-xs">A</div>
-          <span className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>Administrator</span>
+        {/* City/Crop pills */}
+        <div className={`flex flex-wrap gap-2 mt-2 text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          <span className="text-green-600 font-medium">{city}</span>
+          <span>Karachi</span>
+          <span>Islamabad</span>
+          <span className="mx-1">|</span>
+          <span className="text-green-600 font-medium">{crop}</span>
+          <span>Rice</span>
         </div>
       </div>
 
-      <div className="px-8 py-6">
+      <div className="px-5 md:px-8 py-5 md:py-6">
 
-        {/* Metric Cards */}
-        <div className="grid grid-cols-5 gap-4 mb-6">
+        {/* Metric Cards — horizontal scroll on mobile, 5-col grid on desktop */}
+        <div className="flex md:grid md:grid-cols-5 gap-3 md:gap-4 mb-6 overflow-x-auto pb-2 md:pb-0 md:overflow-visible">
           {[
             { label: "Temperature", value: `${weather?.temp}°C`, badge: getTempLabel(weather?.temp), badgeColor: "bg-red-100 text-red-600", icon: "🌡️" },
             { label: "Precipitation", value: `${weather?.rain}mm`, badge: getRainLabel(weather?.rain), badgeColor: "bg-blue-100 text-blue-600", icon: "🌧️" },
@@ -107,19 +102,19 @@ export default function Conditions() {
             { label: "Market Sentiment", value: sentiment, badge: getSentimentLabel(sentiment), badgeColor: getSentimentColor(sentiment), icon: "📊" },
             { label: "Diesel (Ltr)", value: economy?.fuel_price, badge: "ABOVE AVG", badgeColor: "bg-gray-100 text-gray-600", icon: "⛽" },
           ].map((item, i) => (
-            <div key={i} className={`rounded-2xl p-4 shadow-sm ${darkMode ? "bg-gray-900" : "bg-white"}`}>
+            <div key={i} className={`rounded-2xl p-4 shadow-sm flex-shrink-0 w-36 md:w-auto ${darkMode ? "bg-gray-900" : "bg-white"}`}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-lg">{item.icon}</span>
-                <span className={`text-xs font-bold px-2 py-0.5 rounded ${item.badgeColor}`}>{item.badge}</span>
+                <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${item.badgeColor}`}>{item.badge}</span>
               </div>
               <p className={`text-xs mb-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{item.label}</p>
-              <p className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"}`}>{item.value}</p>
+              <p className={`text-xl md:text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"}`}>{item.value}</p>
             </div>
           ))}
         </div>
 
         {/* Risk Profile Cards */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {[
             { title: "Weather Risk Profile", level: weather?.temp > 40 ? "High" : weather?.temp > 33 ? "Moderate" : "Low", desc: "Heat stress alert active for central Punjab region.", color: weather?.temp > 40 ? "text-red-500" : "text-yellow-500" },
             { title: "Economic Risk Index", level: economy?.usd_rate > 290 ? "High" : "Moderate", desc: "Currency volatility affecting fertilizer import costs.", color: economy?.usd_rate > 290 ? "text-red-500" : "text-yellow-500" },
@@ -147,23 +142,23 @@ export default function Conditions() {
           <div className="flex items-center justify-between mb-4">
             <h3 className={`font-bold ${darkMode ? "text-white" : "text-gray-800"}`}>Agriculture Intelligence Feed</h3>
             <button onClick={() => setShowAllReports(true)} className="text-sm text-green-600 font-medium hover:underline">
-              View All Reports →
+              View All →
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {news.slice(0, 2).map((article, i) => (
               <div key={i} className={`border rounded-xl p-4 flex gap-3 ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
-                <div className="w-20 h-16 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden">
+                <div className="w-16 h-14 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden">
                   {article.image ? <img src={article.image} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-green-200"></div>}
                 </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className={`text-xs font-bold px-2 py-0.5 rounded ${getArticleBadge(article.title).color}`}>
                       {getArticleBadge(article.title).label}
                     </span>
-                    <span className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>Source: {article.source}</span>
+                    <span className={`text-xs truncate ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{article.source}</span>
                   </div>
-                  <p className={`text-sm font-semibold leading-tight ${darkMode ? "text-white" : "text-gray-800"}`}>{article.title}</p>
+                  <p className={`text-sm font-semibold leading-tight line-clamp-2 ${darkMode ? "text-white" : "text-gray-800"}`}>{article.title}</p>
                   <p className={`text-xs mt-1 line-clamp-2 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{article.description}</p>
                 </div>
               </div>
@@ -179,17 +174,14 @@ export default function Conditions() {
       </div>
 
       {/* Footer */}
-      <div className={`px-8 py-4 border-t flex justify-between text-xs ${darkMode ? "border-gray-800 text-gray-600" : "border-gray-100 text-gray-400"}`}>
-        <span>© 2024 Khet AI Intelligence. System Status: Optimal</span>
-        <div className="flex gap-4">
-          <span>Terms</span><span>Privacy</span><span>Support</span>
-        </div>
+      <div className={`px-5 md:px-8 py-4 border-t text-xs ${darkMode ? "border-gray-800 text-gray-600" : "border-gray-100 text-gray-400"}`}>
+        <span>© 2024 Khet AI Intelligence</span>
       </div>
 
       {/* All Reports Modal */}
       {showAllReports && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className={`rounded-2xl p-6 w-[700px] max-h-[80vh] overflow-y-auto shadow-xl ${darkMode ? "bg-gray-900 border border-gray-700" : "bg-white"}`}>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className={`rounded-2xl p-5 w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-xl ${darkMode ? "bg-gray-900 border border-gray-700" : "bg-white"}`}>
             <div className="flex items-center justify-between mb-5">
               <h3 className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-800"}`}>📰 All Agriculture Reports</h3>
               <button onClick={() => setShowAllReports(false)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
@@ -198,22 +190,21 @@ export default function Conditions() {
               {news.map((article, i) => {
                 const badge = getArticleBadge(article.title)
                 return (
-                  <div key={i} className={`border rounded-xl p-4 flex gap-4 transition-colors ${darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-100 hover:bg-gray-50"}`}>
-                    <div className="w-20 h-16 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden">
+                  <div key={i} className={`border rounded-xl p-4 flex gap-3 ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
+                    <div className="w-16 h-14 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden">
                       {article.image
                         ? <img src={article.image} alt="" className="w-full h-full object-cover" />
                         : <div className="w-full h-full bg-green-200 flex items-center justify-center text-2xl">🌾</div>}
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <span className={`text-xs font-bold px-2 py-0.5 rounded ${badge.color}`}>{badge.label}</span>
-                        <span className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>Source: {article.source}</span>
+                        <span className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{article.source}</span>
                       </div>
                       <p className={`text-sm font-semibold leading-tight ${darkMode ? "text-white" : "text-gray-800"}`}>{article.title}</p>
                       <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{article.description}</p>
                       {article.url && (
-                        <a href={article.url} target="_blank" rel="noreferrer"
-                          className="text-xs text-green-600 hover:underline mt-1 inline-block">
+                        <a href={article.url} target="_blank" rel="noreferrer" className="text-xs text-green-600 hover:underline mt-1 inline-block">
                           Read full article →
                         </a>
                       )}

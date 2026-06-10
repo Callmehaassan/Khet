@@ -40,12 +40,6 @@ export default function Verdict() {
     setLoading(false)
   }
 
-  const getVerdictColor = (v) => {
-    if (v === "SAFE") return "text-green-600 bg-green-50 border-green-200"
-    if (v === "CAUTION") return "text-yellow-600 bg-yellow-50 border-yellow-200"
-    return "text-red-600 bg-red-50 border-red-200"
-  }
-
   const handleFullReport = () => {
     const weather = JSON.parse(localStorage.getItem("khet_weather") || "{}")
     const economy = JSON.parse(localStorage.getItem("khet_economy") || "{}")
@@ -105,12 +99,12 @@ System Status: Optimal
   }
 
   const historyData = [
-    { date: "Jun 06, 2026", city: city, crop: crop, verdict: "CAUTION", confidence: 72 },
-    { date: "Jun 05, 2026", city: city, crop: crop, verdict: "SAFE", confidence: 85 },
-    { date: "Jun 04, 2026", city: city, crop: crop, verdict: "SAFE", confidence: 91 },
-    { date: "Jun 03, 2026", city: city, crop: crop, verdict: "HIGH RISK", confidence: 88 },
-    { date: "Jun 02, 2026", city: city, crop: crop, verdict: "CAUTION", confidence: 67 },
-    { date: "Jun 01, 2026", city: city, crop: crop, verdict: "SAFE", confidence: 79 },
+    { date: "Jun 06, 2026", city, crop, verdict: "CAUTION", confidence: 72 },
+    { date: "Jun 05, 2026", city, crop, verdict: "SAFE", confidence: 85 },
+    { date: "Jun 04, 2026", city, crop, verdict: "SAFE", confidence: 91 },
+    { date: "Jun 03, 2026", city, crop, verdict: "HIGH RISK", confidence: 88 },
+    { date: "Jun 02, 2026", city, crop, verdict: "CAUTION", confidence: 67 },
+    { date: "Jun 01, 2026", city, crop, verdict: "SAFE", confidence: 79 },
   ]
 
   const getHistoryColor = (v) => {
@@ -130,32 +124,38 @@ System Status: Optimal
 
   return (
     <div className="min-h-screen bg-[#f8f9f5] pb-12">
-      <div className="bg-white border-b px-8 py-4 flex items-center justify-between">
-        <h2 className="font-bold text-2xl">AI Verdict</h2>
-        <div className="text-sm text-gray-500">June 07, 2026 • {city}</div>
+      {/* Header */}
+      <div className="bg-white border-b px-4 sm:px-8 py-4 flex items-center justify-between">
+        <h2 className="font-bold text-xl sm:text-2xl">AI Verdict</h2>
+        <div className="text-xs sm:text-sm text-gray-500">Jun 07, 2026 • {city}</div>
       </div>
 
-      <div className="px-8 py-8">
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2">
-            <div className="bg-white rounded-3xl p-8 shadow">
-              <div className={`rounded-2xl p-6 mb-6 border-2 transition-all duration-700 animate-pulse-once
+      <div className="px-4 sm:px-8 py-6 sm:py-8">
+        {/* single col on mobile, 3-col on desktop */}
+        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
+
+          {/* Left / main column */}
+          <div className="lg:col-span-2 space-y-6">
+
+            {/* Verdict card */}
+            <div className="bg-white rounded-3xl p-5 sm:p-8 shadow">
+              <div className={`rounded-2xl p-5 mb-6 border-2
                 ${verdict?.verdict === "SAFE" ? "bg-green-50 border-green-300" :
                   verdict?.verdict === "CAUTION" ? "bg-yellow-50 border-yellow-300" :
                   "bg-red-50 border-red-300"}`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-5xl">
+                  <span className="text-4xl sm:text-5xl">
                     {verdict?.verdict === "SAFE" ? "✅" :
                      verdict?.verdict === "CAUTION" ? "⚠️" : "🚨"}
                   </span>
-                  <span className={`px-5 py-2 rounded-full font-bold text-sm border animate-bounce
+                  <span className={`px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm border
                     ${verdict?.verdict === "SAFE" ? "bg-green-100 text-green-700 border-green-300" :
                       verdict?.verdict === "CAUTION" ? "bg-yellow-100 text-yellow-700 border-yellow-300" :
                       "bg-red-100 text-red-700 border-red-300"}`}>
                     {verdict?.verdict}
                   </span>
                 </div>
-                <h2 className={`text-3xl font-bold mb-2
+                <h2 className={`text-xl sm:text-3xl font-bold mb-2
                   ${verdict?.verdict === "SAFE" ? "text-green-800" :
                     verdict?.verdict === "CAUTION" ? "text-yellow-800" :
                     "text-red-800"}`}>
@@ -169,23 +169,24 @@ System Status: Optimal
                 </p>
               </div>
 
-              <h2 className="text-xl font-bold mb-4 text-gray-800">Analysis Summary</h2>
+              <h2 className="text-lg sm:text-xl font-bold mb-4 text-gray-800">Analysis Summary</h2>
+
               {reportGenerated && (
                 <div className="mt-4 bg-green-50 border border-green-200 text-green-700 text-sm font-medium px-4 py-3 rounded-xl flex items-center gap-2">
                   ✅ Report downloaded successfully!
                 </div>
               )}
 
-              <div className="flex gap-4 mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <button
                   onClick={handleFullReport}
-                  className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 transition-colors"
+                  className="flex-1 bg-green-700 hover:bg-green-800 text-white font-semibold py-3 sm:py-4 rounded-2xl flex items-center justify-center gap-2 transition-colors text-sm sm:text-base"
                 >
                   ⬇ Full Report
                 </button>
                 <button
                   onClick={() => setShowHistory(true)}
-                  className="flex-1 border border-green-700 text-green-700 font-semibold py-4 rounded-2xl hover:bg-green-50 transition-colors"
+                  className="flex-1 border border-green-700 text-green-700 font-semibold py-3 sm:py-4 rounded-2xl hover:bg-green-50 transition-colors text-sm sm:text-base"
                 >
                   View History
                 </button>
@@ -193,8 +194,8 @@ System Status: Optimal
             </div>
 
             {/* Recommendations */}
-            <div className="bg-white rounded-3xl p-8 shadow mt-6">
-              <h3 className="font-bold text-lg mb-4">💡 Actionable Recommendations</h3>
+            <div className="bg-white rounded-3xl p-5 sm:p-8 shadow">
+              <h3 className="font-bold text-base sm:text-lg mb-4">💡 Actionable Recommendations</h3>
               <div className="space-y-3">
                 {verdict?.advice?.map((tip, i) => (
                   <div key={i} className={`p-4 rounded-xl border-l-4 ${i === 0 ? "bg-green-50 border-green-500" : i === 1 ? "bg-red-50 border-red-400" : "bg-yellow-50 border-yellow-400"}`}>
@@ -205,23 +206,25 @@ System Status: Optimal
             </div>
           </div>
 
-          {/* Right Column */}
+          {/* Right column — stacks below on mobile */}
           <div className="space-y-6">
-            <div className="bg-white rounded-3xl p-8 shadow">
+
+            {/* Confidence donut */}
+            <div className="bg-white rounded-3xl p-5 sm:p-8 shadow">
               <h3 className="font-bold mb-4">Verdict Confidence</h3>
               <div className="flex justify-center">
-                <div className="relative w-48 h-48">
-                  <svg viewBox="0 0 36 36" className="w-48 h-48 -rotate-90">
+                <div className="relative w-40 h-40 sm:w-48 sm:h-48">
+                  <svg viewBox="0 0 36 36" className="w-40 h-40 sm:w-48 sm:h-48 -rotate-90">
                     <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" strokeWidth="4"/>
                     <circle cx="18" cy="18" r="15.9" fill="none" stroke="#22c55e" strokeWidth="4"
                       strokeDasharray={`${Math.max(...Object.values(verdict?.confidence || { a: 88 }))} 100`}
                       strokeLinecap="round"/>
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-5xl font-bold text-green-700">
+                    <span className="text-4xl sm:text-5xl font-bold text-green-700">
                       {Math.max(...Object.values(verdict?.confidence || { a: 88 }))}%
                     </span>
-                    <span className="text-green-600 font-medium">HIGH</span>
+                    <span className="text-green-600 font-medium text-sm">HIGH</span>
                   </div>
                 </div>
               </div>
@@ -230,7 +233,7 @@ System Status: Optimal
                   <div key={label} className="flex items-center justify-between text-sm">
                     <span className="text-gray-600">{label}</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="w-20 sm:w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div className="h-full bg-green-500 rounded-full" style={{ width: `${pct}%` }}></div>
                       </div>
                       <span className="font-semibold text-gray-700 w-8 text-right">{pct}%</span>
@@ -240,8 +243,8 @@ System Status: Optimal
               </div>
             </div>
 
-            {/* Input Summary */}
-            <div className="bg-white rounded-3xl p-6 shadow">
+            {/* Input summary */}
+            <div className="bg-white rounded-3xl p-5 sm:p-6 shadow">
               <h3 className="font-bold mb-4 text-sm">📋 Input Summary</h3>
               <div className="space-y-2 text-sm">
                 {[
@@ -264,44 +267,46 @@ System Status: Optimal
         </div>
       </div>
 
-      <div className="px-8 text-xs text-gray-400">
+      <div className="px-4 sm:px-8 text-xs text-gray-400">
         © 2026 Khet AI Intelligence. System Status: Optimal
       </div>
 
       {/* History Modal */}
       {showHistory && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-[600px] shadow-xl">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-5 w-full max-w-lg shadow-xl">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-bold text-gray-800 text-lg">📖 Verdict History</h3>
+              <h3 className="font-bold text-gray-800 text-base sm:text-lg">📖 Verdict History</h3>
               <button onClick={() => setShowHistory(false)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
             </div>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-500 text-xs border-b border-gray-100">
-                  <th className="pb-3 font-medium">Date</th>
-                  <th className="pb-3 font-medium">City</th>
-                  <th className="pb-3 font-medium">Crop</th>
-                  <th className="pb-3 font-medium">Verdict</th>
-                  <th className="pb-3 font-medium">Confidence</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {historyData.map((row, i) => (
-                  <tr key={i} className="text-gray-700">
-                    <td className="py-3">{row.date}</td>
-                    <td className="py-3">{row.city}</td>
-                    <td className="py-3">{row.crop}</td>
-                    <td className="py-3">
-                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${getHistoryColor(row.verdict)}`}>
-                        {row.verdict}
-                      </span>
-                    </td>
-                    <td className="py-3 font-semibold">{row.confidence}%</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-gray-500 text-xs border-b border-gray-100">
+                    <th className="pb-3 font-medium">Date</th>
+                    <th className="pb-3 font-medium">City</th>
+                    <th className="pb-3 font-medium">Crop</th>
+                    <th className="pb-3 font-medium">Verdict</th>
+                    <th className="pb-3 font-medium">Conf.</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {historyData.map((row, i) => (
+                    <tr key={i} className="text-gray-700">
+                      <td className="py-3 pr-2 whitespace-nowrap">{row.date}</td>
+                      <td className="py-3 pr-2">{row.city}</td>
+                      <td className="py-3 pr-2">{row.crop}</td>
+                      <td className="py-3 pr-2">
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${getHistoryColor(row.verdict)}`}>
+                          {row.verdict}
+                        </span>
+                      </td>
+                      <td className="py-3 font-semibold">{row.confidence}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <button
               onClick={() => setShowHistory(false)}
               className="mt-5 w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"

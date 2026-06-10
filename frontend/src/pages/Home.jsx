@@ -33,8 +33,8 @@ export default function Home() {
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
 
-      {/* Top Nav */}
-      <div className={`px-8 py-3 flex items-center justify-between border-b ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
+      {/* Top Nav — hidden on mobile (hamburger handles nav), visible on desktop */}
+      <div className={`hidden md:flex px-8 py-3 items-center justify-between border-b ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
         <div className="flex items-center gap-8">
           <span className={`font-bold text-base ${darkMode ? "text-white" : "text-gray-900"}`}>Khet</span>
           <div className="flex gap-5 text-sm">
@@ -54,47 +54,47 @@ export default function Home() {
 
       {/* Hero Section */}
       <div
-        className="relative h-[480px] bg-cover bg-center"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070')" }}
+        className="relative bg-cover bg-center"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070')", minHeight: "480px" }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
 
-        <div className="relative z-10 h-full flex flex-col justify-center px-10">
+        <div className="relative z-10 flex flex-col justify-center px-5 md:px-10 py-10 md:py-0 md:h-[480px]">
           <div className="inline-flex items-center gap-2 bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-5 w-fit">
             <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
             LIVE MARKET DATA ACTIVE
           </div>
-          <h1 className="text-5xl font-extrabold text-white leading-tight max-w-xl mb-3 drop-shadow-lg">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight max-w-xl mb-3 drop-shadow-lg">
             Make Smarter Farming Decisions with AI
           </h1>
-          <p className="text-gray-200 max-w-md text-sm mb-8 leading-relaxed">
+          <p className="text-gray-200 max-w-md text-sm mb-6 md:mb-8 leading-relaxed">
             Weather, economy, market sentiment, and crop intelligence combined into one platform for the modern agricultural enterprise.
           </p>
 
           {/* Selection Card */}
-          <div className={`backdrop-blur-sm rounded-2xl shadow-2xl p-6 max-w-xl border ${darkMode ? "bg-gray-900/95 border-gray-700" : "bg-white/95 border-white/50"}`}>
-  <div className="grid grid-cols-2 gap-4 mb-4">
-    <div>
-      <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CITY</label>
-      <div className="relative">
-        <select value={city} onChange={e => setCity(e.target.value)}
-          className={`w-full border-2 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
-          {CITIES.map(c => <option key={c}>{c}</option>)}
-        </select>
-        <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
-      </div>
-    </div>
-    <div>
-      <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CROP</label>
-      <div className="relative">
-        <select value={crop} onChange={e => setCrop(e.target.value)}
-          className={`w-full border-2 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
-          {CROPS.map(c => <option key={c}>{c}</option>)}
-        </select>
-        <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
-      </div>
-    </div>
-  </div>
+          <div className={`backdrop-blur-sm rounded-2xl shadow-2xl p-5 md:p-6 w-full max-w-xl border ${darkMode ? "bg-gray-900/95 border-gray-700" : "bg-white/95 border-white/50"}`}>
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4">
+              <div>
+                <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CITY</label>
+                <div className="relative">
+                  <select value={city} onChange={e => setCity(e.target.value)}
+                    className={`w-full border-2 rounded-xl px-3 md:px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
+                    {CITIES.map(c => <option key={c}>{c}</option>)}
+                  </select>
+                  <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
+                </div>
+              </div>
+              <div>
+                <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CROP</label>
+                <div className="relative">
+                  <select value={crop} onChange={e => setCrop(e.target.value)}
+                    className={`w-full border-2 rounded-xl px-3 md:px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
+                    {CROPS.map(c => <option key={c}>{c}</option>)}
+                  </select>
+                  <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
+                </div>
+              </div>
+            </div>
             <button onClick={handleAnalyze}
               className="w-full bg-green-700 hover:bg-green-800 active:scale-95 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 text-base transition-all duration-200 shadow-lg shadow-green-900/30">
               <span>⊞</span> Analyze My Conditions
@@ -104,10 +104,10 @@ export default function Home() {
       </div>
 
       {/* Stats Cards Row */}
-      <div className="px-8 py-8 grid grid-cols-3 gap-6">
+      <div className="px-5 md:px-8 py-6 md:py-8 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
 
         {/* Soil Health */}
-        <div className={`rounded-3xl p-7 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${darkMode ? "bg-gray-900" : "bg-white"}`}>
+        <div className={`rounded-3xl p-6 md:p-7 shadow-lg ${darkMode ? "bg-gray-900" : "bg-white"}`}>
           <div className="flex justify-between items-start mb-2">
             <div>
               <p className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-800"}`}>Soil Health Index</p>
@@ -135,16 +135,14 @@ export default function Home() {
         </div>
 
         {/* Market Price */}
-        <div className={`rounded-3xl p-7 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${darkMode ? "bg-gray-900" : "bg-white"}`}>
+        <div className={`rounded-3xl p-6 md:p-7 shadow-lg ${darkMode ? "bg-gray-900" : "bg-white"}`}>
           <div className="flex justify-between items-start mb-4">
             <p className={`text-xs font-bold tracking-widest uppercase ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Market Price</p>
             <span className="bg-amber-400 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full">
               {crop.toUpperCase()}
             </span>
           </div>
-          <p className={`text-5xl font-extrabold mt-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
-            Rs. 4,500
-          </p>
+          <p className={`text-5xl font-extrabold mt-2 ${darkMode ? "text-white" : "text-gray-900"}`}>Rs. 4,500</p>
           <p className={`text-sm mt-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>/mnd (per maund)</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-red-500 text-sm font-semibold">↘ -0.5% market dip</span>
@@ -166,7 +164,7 @@ export default function Home() {
         </div>
 
         {/* Next Harvest */}
-        <div className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-7 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-white relative overflow-hidden">
+        <div className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-6 md:p-7 shadow-lg text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
           <div className="relative z-10">
@@ -191,8 +189,8 @@ export default function Home() {
       </div>
 
       {/* Irrigation Strategy */}
-      <div className="px-8 pb-8">
-        <div className={`rounded-3xl p-6 shadow-lg flex items-center gap-5 ${darkMode ? "bg-gray-900" : "bg-white"}`}>
+      <div className="px-5 md:px-8 pb-8">
+        <div className={`rounded-3xl p-5 md:p-6 shadow-lg flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-5 ${darkMode ? "bg-gray-900" : "bg-white"}`}>
           <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 border border-blue-100">
             💧
           </div>
@@ -205,7 +203,7 @@ export default function Home() {
             </div>
           </div>
           <button onClick={() => setShowSensorModal(true)}
-            className={`border-2 text-sm font-bold px-6 py-3 rounded-xl transition-all hover:scale-105 ${darkMode ? "border-gray-700 text-gray-300 hover:bg-gray-800" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}>
+            className={`w-full md:w-auto border-2 text-sm font-bold px-6 py-3 rounded-xl transition-all ${darkMode ? "border-gray-700 text-gray-300 hover:bg-gray-800" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}>
             CONFIGURE SENSORS
           </button>
         </div>
@@ -213,8 +211,8 @@ export default function Home() {
 
       {/* Sensor Modal */}
       {showSensorModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className={`rounded-2xl p-6 w-96 shadow-2xl ${darkMode ? "bg-gray-900 border border-gray-700" : "bg-white"}`}>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className={`rounded-2xl p-6 w-full max-w-sm shadow-2xl ${darkMode ? "bg-gray-900 border border-gray-700" : "bg-white"}`}>
             <div className="flex items-center justify-between mb-5">
               <h3 className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-800"}`}>💧 Configure Sensors</h3>
               <button onClick={() => setShowSensorModal(false)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
