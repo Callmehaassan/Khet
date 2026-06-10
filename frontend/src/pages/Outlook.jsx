@@ -68,14 +68,21 @@ export default function Outlook() {
     }, 2000)
   }
 
-  const chartData = forecast.map((day, i) => ({
-    day: `Jun ${8 + i}`,
-    temp: day.temp,
-    humidity: day.humidity
-  }))
+  // FIXED: Extract the actual date day instead of assuming index baseline starts at 8
+  const chartData = forecast.map((day) => {
+    const dateObj = new Date(day.date);
+    const dayName = isNaN(dateObj.getTime()) 
+      ? 'Data' 
+      : dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return {
+      day: dayName,
+      temp: day.temp,
+      humidity: day.humidity
+    }
+  })
 
   if (loading) return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen items-center justify-center bg-[#f8f9f5]">
       <div className="text-center">
         <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p className="mt-4 text-gray-600 font-medium">Loading June 2026 Outlook...</p>
@@ -84,89 +91,92 @@ export default function Outlook() {
   )
 
   return (
-    <div className="min-h-screen bg-[#f8f9f5]">
+    // FIXED: overflow-x-hidden avoids the weird right white blank space blocking mobile views
+    <div className="min-h-screen bg-[#f8f9f5] overflow-x-hidden w-full">
 
       {/* Header */}
-      <div className="bg-white border-b px-4 sm:px-8 py-4 flex items-center justify-between">
+      <div className="bg-white border-b px-4 sm:px-8 py-4 flex items-center justify-between w-full">
         <div>
-          <h2 className="font-bold text-xl sm:text-2xl">3-Day Outlook</h2>
+          <h2 className="font-bold text-xl sm:text-2xl text-gray-800">3-Day Outlook</h2>
           <p className="text-xs sm:text-sm text-gray-500">{city} • Updated moments ago • June 2026</p>
         </div>
         <button onClick={fetchForecast} className="text-green-600 hover:underline font-medium text-sm">Refresh</button>
       </div>
 
-      {/* Best Day Banner — stacks vertically on mobile */}
+      {/* Best Day Banner */}
       <div className="mx-4 sm:mx-8 mt-6 bg-green-700 text-white rounded-3xl p-5 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl sm:text-5xl flex-shrink-0">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
             🌟
           </div>
           <div className="flex-1">
-            <p className="uppercase text-xs tracking-widest mb-1 opacity-80">BEST DAY TO ACT: DAY AFTER TOMORROW</p>
-            <p className="text-base sm:text-xl leading-snug">Our intelligence engine confirms optimal operational conditions for June 2026.</p>
+            <p className="uppercase text-[10px] sm:text-xs tracking-widest mb-1 opacity-80 font-bold">BEST DAY TO ACT: DAY AFTER TOMORROW</p>
+            <p className="text-sm sm:text-xl leading-snug font-medium">Our intelligence engine confirms optimal operational conditions for June 2026.</p>
           </div>
           <button
             onClick={() => setShowProtocolModal(true)}
-            className="bg-white text-green-700 px-5 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-semibold hover:bg-green-50 transition-colors text-sm sm:text-base w-full sm:w-auto text-center">
+            className="bg-white text-green-700 px-5 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-semibold hover:bg-green-50 transition-colors text-sm sm:text-base w-full sm:w-auto text-center shadow-sm">
             Initialize Protocol
           </button>
         </div>
       </div>
 
-      {/* Forecast Cards — 1 col mobile, 3 col desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-8 mt-6 sm:mt-8">
+      {/* Forecast Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-8 mt-6">
         {forecast.map((day, i) => (
-          <div key={i} className="bg-white rounded-3xl p-5 sm:p-8 shadow">
-            <p className="font-medium text-base sm:text-lg">
+          <div key={i} className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-gray-100">
+            <p className="font-semibold text-gray-700 text-base sm:text-lg">
               {new Date(day.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
             </p>
-            <p className="text-5xl sm:text-6xl font-bold mt-2 sm:mt-3">{day.temp}°C</p>
-            <div className="mt-5 sm:mt-8 space-y-3 sm:space-y-4 text-sm">
-              <div className="flex justify-between"><span className="text-gray-500">Precipitation</span><span>{day.rain} mm</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Humidity</span><span>{day.humidity}%</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Condition</span><span>{day.description}</span></div>
+            <p className="text-4xl sm:text-5xl font-bold mt-2 text-gray-900">{day.temp}°C</p>
+            <div className="mt-4 sm:mt-6 space-y-2.5 text-xs sm:text-sm">
+              <div className="flex justify-between items-center py-1 border-b border-gray-50"><span className="text-gray-400">Precipitation</span><span className="font-medium text-gray-800">{day.rain} mm</span></div>
+              <div className="flex justify-between items-center py-1 border-b border-gray-50"><span className="text-gray-400">Humidity</span><span className="font-medium text-gray-800">{day.humidity}%</span></div>
+              <div className="flex justify-between items-center py-1"><span className="text-gray-400">Condition</span><span className="font-medium text-gray-800">{day.description}</span></div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Chart */}
-      <div className="mx-4 sm:mx-8 mt-6 sm:mt-8 bg-white rounded-3xl p-5 sm:p-8 shadow">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 sm:mb-6">
+      {/* Chart Container */}
+      {/* FIXED: added min-w-0 to prevent Recharts breaking parent block layout metrics on small screens */}
+      <div className="mx-4 sm:mx-8 my-6 bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-gray-100 min-w-0">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
           <div>
-            <h3 className="font-bold text-lg sm:text-xl text-gray-800">Temperature & Humidity Trend</h3>
-            <p className="text-xs sm:text-sm text-gray-400 mt-0.5">3-day forecast for {city} • June 2026</p>
+            <h3 className="font-bold text-lg text-gray-800">Temperature & Humidity Trend</h3>
+            <p className="text-xs text-gray-400 mt-0.5">3-day forecast for {city} • June 2026</p>
           </div>
-          <div className="flex items-center gap-4 sm:gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-xs sm:text-sm text-gray-500 font-medium">Temp (°C)</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+              <span className="text-xs text-gray-500 font-medium">Temp (°C)</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-              <span className="text-xs sm:text-sm text-gray-500 font-medium">Humidity (%)</span>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-400"></div>
+              <span className="text-xs text-gray-500 font-medium">Humidity (%)</span>
             </div>
           </div>
         </div>
 
-        {/* Stat Summary — 2 col on mobile, 4 col on desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-5 sm:mb-6">
+        {/* Stat Summary */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           {[
-            { label: "Max Temp", value: `${Math.max(...forecast.map(d => d.temp))}°C`, color: "text-red-500", bg: "bg-red-50" },
-            { label: "Min Temp", value: `${Math.min(...forecast.map(d => d.temp))}°C`, color: "text-green-600", bg: "bg-green-50" },
-            { label: "Max Humidity", value: `${Math.max(...forecast.map(d => d.humidity))}%`, color: "text-blue-500", bg: "bg-blue-50" },
-            { label: "Avg Temp", value: `${Math.round(forecast.reduce((a, b) => a + b.temp, 0) / forecast.length)}°C`, color: "text-orange-500", bg: "bg-orange-50" },
+            { label: "Max Temp", value: forecast.length ? `${Math.max(...forecast.map(d => d.temp))}°C` : '--', color: "text-red-500", bg: "bg-red-50/60" },
+            { label: "Min Temp", value: forecast.length ? `${Math.min(...forecast.map(d => d.temp))}°C` : '--', color: "text-green-600", bg: "bg-green-50/60" },
+            { label: "Max Humidity", value: forecast.length ? `${Math.max(...forecast.map(d => d.humidity))}%` : '--', color: "text-blue-500", bg: "bg-blue-50/60" },
+            { label: "Avg Temp", value: forecast.length ? `${Math.round(forecast.reduce((a, b) => a + b.temp, 0) / forecast.length)}°C` : '--', color: "text-orange-500", bg: "bg-orange-50/60" },
           ].map((stat, i) => (
             <div key={i} className={`${stat.bg} rounded-2xl p-3 sm:p-4`}>
-              <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
-              <p className={`text-xl sm:text-2xl font-bold mt-1 ${stat.color}`}>{stat.value}</p>
+              <p className="text-[11px] text-gray-500 font-medium tracking-wide">{stat.label}</p>
+              <p className={`text-lg sm:text-xl font-bold mt-0.5 ${stat.color}`}>{stat.value}</p>
             </div>
           ))}
         </div>
 
-        <div className="h-56 sm:h-72">
+        {/* Recharts wrapper */}
+        <div className="h-48 sm:h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="tempGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#22c55e" stopOpacity={0.15}/>
@@ -177,18 +187,17 @@ export default function Outlook() {
                   <stop offset="95%" stopColor="#60a5fa" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false}/>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false}/>
               <XAxis
                 dataKey="day"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: "#9ca3af", fontSize: 12, fontWeight: 500 }}
+                tick={{ fill: "#9ca3af", fontSize: 11, fontWeight: 500 }}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "#9ca3af", fontSize: 11 }}
-                width={30}
               />
               <Tooltip
                 contentStyle={{
@@ -196,10 +205,10 @@ export default function Outlook() {
                   border: "none",
                   borderRadius: "12px",
                   color: "#fff",
-                  fontSize: "13px",
-                  padding: "10px 16px"
+                  fontSize: "12px",
+                  padding: "8px 12px"
                 }}
-                labelStyle={{ color: "#9ca3af", marginBottom: "4px" }}
+                labelStyle={{ color: "#9ca3af", marginBottom: "2px" }}
                 itemStyle={{ color: "#fff" }}
                 cursor={{ stroke: "#e5e7eb", strokeWidth: 1 }}
               />
@@ -207,107 +216,108 @@ export default function Outlook() {
                 type="monotone"
                 dataKey="temp"
                 stroke="#22c55e"
-                strokeWidth={3}
+                strokeWidth={2.5}
                 name="Temp (°C)"
-                dot={{ fill: "#22c55e", r: 5, strokeWidth: 2, stroke: "#fff" }}
-                activeDot={{ r: 7, fill: "#22c55e", stroke: "#fff", strokeWidth: 2 }}
+                dot={{ fill: "#22c55e", r: 4, strokeWidth: 1.5, stroke: "#fff" }}
+                activeDot={{ r: 6, fill: "#22c55e", stroke: "#fff", strokeWidth: 1.5 }}
               />
               <Line
                 type="monotone"
                 dataKey="humidity"
                 stroke="#60a5fa"
-                strokeWidth={3}
+                strokeWidth={2.5}
                 name="Humidity (%)"
-                dot={{ fill: "#60a5fa", r: 5, strokeWidth: 2, stroke: "#fff" }}
-                activeDot={{ r: 7, fill: "#60a5fa", stroke: "#fff", strokeWidth: 2 }}
-                strokeDasharray="6 3"
+                dot={{ fill: "#60a5fa", r: 4, strokeWidth: 1.5, stroke: "#fff" }}
+                activeDot={{ r: 6, fill: "#60a5fa", stroke: "#fff", strokeWidth: 1.5 }}
+                strokeDasharray="5 4"
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      <div className="px-4 sm:px-8 py-6 text-xs text-gray-400 border-t">
+      <div className="px-4 sm:px-8 py-4 text-[11px] text-gray-400 border-t bg-white">
         © 2026 Khet AI Intelligence. System Status: Optimal
       </div>
 
       {/* Protocol Modal */}
       {showProtocolModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-          <div className="bg-white rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 w-full sm:max-w-lg shadow-xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-5">
+        <div className="fixed inset-0 bg-black/60 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4 animate-fadeIn">
+          <div className="bg-white rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 w-full sm:max-w-md shadow-xl max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-gray-800 text-base sm:text-lg">🌟 Initialize Protocol</h3>
-              <button onClick={() => setShowProtocolModal(false)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+              <button onClick={() => setShowProtocolModal(false)} className="text-gray-400 hover:text-gray-600 text-lg p-1">✕</button>
             </div>
 
-            <div className="bg-green-50 rounded-xl p-3 mb-5">
-              <p className="text-sm text-green-700 font-medium">
+            <div className="bg-green-50 rounded-xl p-3 mb-4">
+              <p className="text-xs sm:text-sm text-green-700 font-medium">
                 Setting up farming protocol for <strong>{crop}</strong> in <strong>{city}</strong>
               </p>
             </div>
 
             {/* Date Selection */}
-            <div className="mb-5">
-              <label className="text-sm font-medium text-gray-700 block mb-2">Select Action Date</label>
+            <div className="mb-4">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Select Action Date</label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { value: "today", label: "Today", date: "Jun 7" },
-                  { value: "tomorrow", label: "Tomorrow", date: "Jun 8" },
-                  { value: "day_after_tomorrow", label: "Day After", date: "Jun 9" },
+                  { value: "today", label: "Today", date: "Jun 8" },
+                  { value: "tomorrow", label: "Tomorrow", date: "Jun 9" },
+                  { value: "day_after_tomorrow", label: "Day After", date: "Jun 10" },
                 ].map(opt => (
                   <button
                     key={opt.value}
+                    type="button"
                     onClick={() => setSelectedDate(opt.value)}
-                    className={`p-3 rounded-xl border text-sm font-medium transition-colors ${
+                    className={`p-2 sm:p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
                       selectedDate === opt.value
-                        ? "bg-green-700 text-white border-green-700"
+                        ? "bg-green-700 text-white border-green-700 shadow-sm"
                         : "border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}>
-                    <div>{opt.label}</div>
-                    <div className="text-xs opacity-70">{opt.date}</div>
+                    <div className="font-semibold">{opt.label}</div>
+                    <div className="text-[10px] opacity-70 mt-0.5">{opt.date}</div>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Action Checklist */}
-            <div className="mb-5">
-              <label className="text-sm font-medium text-gray-700 block mb-2">Select Actions to Schedule</label>
-              <div className="space-y-2">
+            <div className="mb-4">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Select Actions to Schedule</label>
+              <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                 {protocolActions.map((action, i) => (
-                  <label key={i} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer">
+                  <label key={i} className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="checkbox"
                       checked={selectedActions.includes(action)}
                       onChange={() => toggleAction(action)}
-                      className="accent-green-600 w-4 h-4 flex-shrink-0"
+                      className="accent-green-600 w-4 h-4 flex-shrink-0 rounded border-gray-300"
                     />
-                    <span className="text-sm text-gray-700">{action}</span>
+                    <span className="text-xs sm:text-sm text-gray-700 font-medium">{action}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             {selectedActions.length === 0 && (
-              <p className="text-xs text-red-500 mb-3">Please select at least one action to continue.</p>
+              <p className="text-[11px] text-red-500 mb-3 font-medium">Please select at least one action to continue.</p>
             )}
 
             {protocolSaved && (
-              <div className="bg-green-50 border border-green-200 text-green-700 text-sm font-medium px-4 py-3 rounded-xl mb-3 flex items-center gap-2">
-                ✅ Protocol saved! {selectedActions.length} actions scheduled for {selectedDate.replace(/_/g, " ")}.
+              <div className="bg-green-50 border border-green-200 text-green-700 text-xs font-medium px-3 py-2.5 rounded-xl mb-3 flex items-center gap-2 animate-pulse">
+                ✅ Protocol saved securely!
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 mt-2">
               <button
                 onClick={handleSaveProtocol}
                 disabled={selectedActions.length === 0}
-                className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-xl text-sm transition-colors">
+                className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-xl text-xs sm:text-sm transition-colors order-1 sm:order-2">
                 Save Protocol
               </button>
               <button
                 onClick={() => { setShowProtocolModal(false); navigate("/conditions") }}
-                className="flex-1 border border-gray-200 text-gray-600 font-semibold py-2.5 rounded-xl text-sm hover:bg-gray-50">
+                className="flex-1 border border-gray-200 text-gray-600 font-semibold py-2.5 rounded-xl text-xs sm:text-sm hover:bg-gray-50 transition-colors order-2 sm:order-1">
                 Re-analyze Conditions
               </button>
             </div>

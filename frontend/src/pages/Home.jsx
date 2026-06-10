@@ -31,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
 
       {/* Top Nav — hidden on mobile (hamburger handles nav), visible on desktop */}
       <div className={`hidden md:flex px-8 py-3 items-center justify-between border-b ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
@@ -54,17 +54,17 @@ export default function Home() {
 
       {/* Hero Section */}
       <div
-        className="relative bg-cover bg-center"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070')", minHeight: "480px" }}
+        className="relative bg-cover bg-center w-full"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
 
-        <div className="relative z-10 flex flex-col justify-center px-5 md:px-10 py-10 md:py-0 md:h-[480px]">
+        <div className="relative z-10 flex flex-col justify-center px-4 sm:px-6 md:px-10 py-10 md:h-[480px]">
           <div className="inline-flex items-center gap-2 bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-5 w-fit">
             <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
             LIVE MARKET DATA ACTIVE
           </div>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight max-w-xl mb-3 drop-shadow-lg">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight max-w-xl mb-3 drop-shadow-lg">
             Make Smarter Farming Decisions with AI
           </h1>
           <p className="text-gray-200 max-w-md text-sm mb-6 md:mb-8 leading-relaxed">
@@ -73,7 +73,7 @@ export default function Home() {
 
           {/* Selection Card */}
           <div className={`backdrop-blur-sm rounded-2xl shadow-2xl p-5 md:p-6 w-full max-w-xl border ${darkMode ? "bg-gray-900/95 border-gray-700" : "bg-white/95 border-white/50"}`}>
-            <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-4">
               <div>
                 <label className={`block text-xs font-bold tracking-widest mb-2 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>SELECT CITY</label>
                 <div className="relative">
@@ -89,7 +89,7 @@ export default function Home() {
                 <div className="relative">
                   <select value={crop} onChange={e => setCrop(e.target.value)}
                     className={`w-full border-2 rounded-xl px-3 md:px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
-                    {CROPS.map(c => <option key={c}>{c}</option>)}
+                    {CROP.map(c => <option key={c}>{c}</option>)}
                   </select>
                   <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
                 </div>
@@ -104,16 +104,16 @@ export default function Home() {
       </div>
 
       {/* Stats Cards Row */}
-      <div className="px-5 md:px-8 py-6 md:py-8 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+      <div className="px-4 sm:px-6 md:px-8 py-6 md:py-8 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
 
         {/* Soil Health */}
-        <div className={`rounded-3xl p-6 md:p-7 shadow-lg ${darkMode ? "bg-gray-900" : "bg-white"}`}>
+        <div className={`rounded-3xl p-5 sm:p-6 md:p-7 shadow-lg ${darkMode ? "bg-gray-900" : "bg-white"}`}>
           <div className="flex justify-between items-start mb-2">
             <div>
               <p className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-800"}`}>Soil Health Index</p>
               <p className="text-green-500 text-sm font-medium mt-0.5">↗ +2.4% from last week</p>
             </div>
-            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-xl">🌱</div>
+            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-xl flex-shrink-0">🌱</div>
           </div>
           <div className="flex items-center justify-center py-4">
             <div className="relative w-36 h-36">
@@ -135,14 +135,14 @@ export default function Home() {
         </div>
 
         {/* Market Price */}
-        <div className={`rounded-3xl p-6 md:p-7 shadow-lg ${darkMode ? "bg-gray-900" : "bg-white"}`}>
+        <div className={`rounded-3xl p-5 sm:p-6 md:p-7 shadow-lg ${darkMode ? "bg-gray-900" : "bg-white"}`}>
           <div className="flex justify-between items-start mb-4">
             <p className={`text-xs font-bold tracking-widest uppercase ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Market Price</p>
-            <span className="bg-amber-400 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full">
+            <span className="bg-amber-400 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full flex-shrink-0">
               {crop.toUpperCase()}
             </span>
           </div>
-          <p className={`text-5xl font-extrabold mt-2 ${darkMode ? "text-white" : "text-gray-900"}`}>Rs. 4,500</p>
+          <p className={`text-4xl sm:text-5xl font-extrabold mt-2 ${darkMode ? "text-white" : "text-gray-900"}`}>Rs. 4,500</p>
           <p className={`text-sm mt-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>/mnd (per maund)</p>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-red-500 text-sm font-semibold">↘ -0.5% market dip</span>
@@ -164,16 +164,16 @@ export default function Home() {
         </div>
 
         {/* Next Harvest */}
-        <div className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-6 md:p-7 shadow-lg text-white relative overflow-hidden">
+        <div className="bg-gradient-to-br from-green-700 to-green-900 rounded-3xl p-5 sm:p-6 md:p-7 shadow-lg text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
           <div className="relative z-10">
             <div className="flex justify-between items-start mb-4">
               <p className="text-xs font-bold tracking-widest text-green-200 uppercase">Next Harvest</p>
-              <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-lg">🕒</div>
+              <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-lg flex-shrink-0">🕒</div>
             </div>
-            <p className="text-6xl font-extrabold leading-none">18</p>
-            <p className="text-3xl font-bold text-green-200 mt-1">Days</p>
+            <p className="text-5xl sm:text-6xl font-extrabold leading-none">18</p>
+            <p className="text-2xl sm:text-3xl font-bold text-green-200 mt-1">Days</p>
             <p className="text-green-300 text-sm mt-3">Expected yield: 45 maunds per acre</p>
             <div className="mt-4 h-1.5 bg-white/20 rounded-full overflow-hidden">
               <div className="h-full w-[70%] bg-white/60 rounded-full"></div>
@@ -189,7 +189,7 @@ export default function Home() {
       </div>
 
       {/* Irrigation Strategy */}
-      <div className="px-5 md:px-8 pb-8">
+      <div className="px-4 sm:px-6 md:px-8 pb-8">
         <div className={`rounded-3xl p-5 md:p-6 shadow-lg flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-5 ${darkMode ? "bg-gray-900" : "bg-white"}`}>
           <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 border border-blue-100">
             💧
@@ -203,7 +203,7 @@ export default function Home() {
             </div>
           </div>
           <button onClick={() => setShowSensorModal(true)}
-            className={`w-full md:w-auto border-2 text-sm font-bold px-6 py-3 rounded-xl transition-all ${darkMode ? "border-gray-700 text-gray-300 hover:bg-gray-800" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}>
+            className={`w-full md:w-auto border-2 text-sm font-bold px-6 py-3 rounded-xl transition-all flex-shrink-0 ${darkMode ? "border-gray-700 text-gray-300 hover:bg-gray-800" : "border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300"}`}>
             CONFIGURE SENSORS
           </button>
         </div>

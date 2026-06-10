@@ -60,7 +60,7 @@ export default function Conditions() {
   }
 
   if (loading) return (
-    <div className={`flex items-center justify-center min-h-screen ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
+    <div className={`flex items-center justify-center min-h-screen w-full ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
       <div className="text-center">
         <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p className={`mt-4 font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>Fetching live data...</p>
@@ -69,10 +69,10 @@ export default function Conditions() {
   )
 
   return (
-    <div className={`min-h-screen ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden ${darkMode ? "bg-gray-950" : "bg-[#f0f4f0]"}`}>
 
       {/* Header */}
-      <div className={`border-b px-5 md:px-8 py-4 ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
+      <div className={`border-b px-4 sm:px-6 md:px-8 py-4 ${darkMode ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
         <div className="flex items-center justify-between">
           <h2 className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-900"}`}>Today's Intelligence</h2>
           <div className="flex items-center gap-3">
@@ -81,7 +81,7 @@ export default function Conditions() {
           </div>
         </div>
         {/* City/Crop pills */}
-        <div className={`flex flex-wrap gap-2 mt-2 text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+        <div className={`flex flex-wrap gap-2 mt-2 text-xs items-center ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
           <span className="text-green-600 font-medium">{city}</span>
           <span>Karachi</span>
           <span>Islamabad</span>
@@ -91,10 +91,10 @@ export default function Conditions() {
         </div>
       </div>
 
-      <div className="px-5 md:px-8 py-5 md:py-6">
+      <div className="px-4 sm:px-6 md:px-8 py-5 md:py-6">
 
-        {/* Metric Cards — horizontal scroll on mobile, 5-col grid on desktop */}
-        <div className="flex md:grid md:grid-cols-5 gap-3 md:gap-4 mb-6 overflow-x-auto pb-2 md:pb-0 md:overflow-visible">
+        {/* Metric Cards — Clean grid scaling for mobile to desktop viewports */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-6">
           {[
             { label: "Temperature", value: `${weather?.temp}°C`, badge: getTempLabel(weather?.temp), badgeColor: "bg-red-100 text-red-600", icon: "🌡️" },
             { label: "Precipitation", value: `${weather?.rain}mm`, badge: getRainLabel(weather?.rain), badgeColor: "bg-blue-100 text-blue-600", icon: "🌧️" },
@@ -102,13 +102,15 @@ export default function Conditions() {
             { label: "Market Sentiment", value: sentiment, badge: getSentimentLabel(sentiment), badgeColor: getSentimentColor(sentiment), icon: "📊" },
             { label: "Diesel (Ltr)", value: economy?.fuel_price, badge: "ABOVE AVG", badgeColor: "bg-gray-100 text-gray-600", icon: "⛽" },
           ].map((item, i) => (
-            <div key={i} className={`rounded-2xl p-4 shadow-sm flex-shrink-0 w-36 md:w-auto ${darkMode ? "bg-gray-900" : "bg-white"}`}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-400 text-lg">{item.icon}</span>
-                <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${item.badgeColor}`}>{item.badge}</span>
+            <div key={i} className={`rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col justify-between min-w-0 ${darkMode ? "bg-gray-900" : "bg-white"} ${i === 4 ? "col-span-2 sm:col-span-1" : ""}`}>
+              <div className="flex items-center justify-between mb-2 gap-1">
+                <span className="text-gray-400 text-lg flex-shrink-0">{item.icon}</span>
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tight truncate ${item.badgeColor}`}>{item.badge}</span>
               </div>
-              <p className={`text-xs mb-1 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{item.label}</p>
-              <p className={`text-xl md:text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"}`}>{item.value}</p>
+              <div>
+                <p className={`text-[11px] mb-1 truncate ${darkMode ? "text-gray-400" : "text-gray-500"}`}>{item.label}</p>
+                <p className={`text-lg sm:text-xl md:text-2xl font-bold tracking-tight break-words ${darkMode ? "text-white" : "text-gray-800"}`}>{item.value}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -147,13 +149,13 @@ export default function Conditions() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {news.slice(0, 2).map((article, i) => (
-              <div key={i} className={`border rounded-xl p-4 flex gap-3 ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
-                <div className="w-16 h-14 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden">
+              <div key={i} className={`border rounded-xl p-4 flex flex-col sm:flex-row gap-3 ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
+                <div className="w-16 h-14 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden mx-auto sm:mx-0">
                   {article.image ? <img src={article.image} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-green-200"></div>}
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded ${getArticleBadge(article.title).color}`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${getArticleBadge(article.title).color}`}>
                       {getArticleBadge(article.title).label}
                     </span>
                     <span className={`text-xs truncate ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{article.source}</span>
@@ -168,7 +170,7 @@ export default function Conditions() {
 
         {/* Get Verdict Button */}
         <button onClick={handleGetVerdict}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition-colors">
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition-colors active:scale-[0.99]">
           🧠 Get AI Verdict
         </button>
       </div>
@@ -180,7 +182,7 @@ export default function Conditions() {
 
       {/* All Reports Modal */}
       {showAllReports && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4 backdrop-blur-sm">
           <div className={`rounded-2xl p-5 w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-xl ${darkMode ? "bg-gray-900 border border-gray-700" : "bg-white"}`}>
             <div className="flex items-center justify-between mb-5">
               <h3 className={`font-bold text-lg ${darkMode ? "text-white" : "text-gray-800"}`}>📰 All Agriculture Reports</h3>
@@ -190,15 +192,15 @@ export default function Conditions() {
               {news.map((article, i) => {
                 const badge = getArticleBadge(article.title)
                 return (
-                  <div key={i} className={`border rounded-xl p-4 flex gap-3 ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
-                    <div className="w-16 h-14 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden">
+                  <div key={i} className={`border rounded-xl p-4 flex flex-col sm:flex-row gap-3 ${darkMode ? "border-gray-700" : "border-gray-100"}`}>
+                    <div className="w-16 h-14 bg-green-100 rounded-lg flex-shrink-0 overflow-hidden mx-auto sm:mx-0">
                       {article.image
                         ? <img src={article.image} alt="" className="w-full h-full object-cover" />
                         : <div className="w-full h-full bg-green-200 flex items-center justify-center text-2xl">🌾</div>}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded ${badge.color}`}>{badge.label}</span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${badge.color}`}>{badge.label}</span>
                         <span className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{article.source}</span>
                       </div>
                       <p className={`text-sm font-semibold leading-tight ${darkMode ? "text-white" : "text-gray-800"}`}>{article.title}</p>
