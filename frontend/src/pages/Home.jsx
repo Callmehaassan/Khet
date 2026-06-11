@@ -89,7 +89,7 @@ export default function Home() {
                 <div className="relative">
                   <select value={crop} onChange={e => setCrop(e.target.value)}
                     className={`w-full border-2 rounded-xl px-3 md:px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm appearance-none font-medium ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
-                    {CROP.map(c => <option key={c}>{c}</option>)}
+                    {CROPS.map(c => <option key={c}>{c}</option>)}
                   </select>
                   <span className={`absolute right-3 top-3 pointer-events-none text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
                 </div>
